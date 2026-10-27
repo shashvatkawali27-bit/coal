@@ -1,0 +1,47 @@
+.model small
+.stack 100h
+
+.code
+main proc
+
+    mov ax, 0013h
+    int 10h
+
+    mov cx, 100
+    mov dx, 50
+    mov bx, 1
+    mov si, 50
+
+draw_triangle:
+    push cx
+    mov di, bx
+
+line_x:
+    mov ah, 0Ch
+    mov al, 0Eh
+    mov bh, 00h
+    int 10h
+
+    inc cx
+    dec di
+    jnz line_x
+
+    pop cx
+    inc dx
+    dec si
+    add bx, 2
+    dec cx
+    cmp si, 0
+    jg draw_triangle
+
+    mov ah, 00h
+    int 16h
+
+    mov ax, 0003h
+    int 10h
+
+    mov ax, 4C00h
+    int 21h
+
+main endp
+end main
